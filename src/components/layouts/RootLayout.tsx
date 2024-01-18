@@ -1,21 +1,12 @@
-import React from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, MenuProps, theme } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+import { Outlet } from "react-router-dom";
+const items: MenuProps["items"] = [
+  {
+    key: "121",
+    label: "Dashbaord",
+  },
+];
 
 const RootLayout = () => {
   const {
@@ -23,10 +14,11 @@ const RootLayout = () => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{ height: "100vh" }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
+        style={{ paddingLeft: "10px" }}
         onBreakpoint={broken => {
           console.log(broken);
         }}
@@ -34,7 +26,9 @@ const RootLayout = () => {
           console.log(collapsed, type);
         }}
       >
-        <div className="demo-logo-vertical" />
+        <div>
+          <h1 style={{ color: "white", margin: "20px" }}>PH University </h1>
+        </div>
         <Menu
           theme="dark"
           mode="inline"
@@ -43,7 +37,7 @@ const RootLayout = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
@@ -53,7 +47,7 @@ const RootLayout = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            content
+            <Outlet />
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
