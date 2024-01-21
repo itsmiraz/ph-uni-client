@@ -1,7 +1,7 @@
 import { useAcademicSemisterQuery } from "../../../redux/feature/academicSemister/academicSemisterApi";
 
 const AcademicSemiseter = () => {
-  const { data, error } = useAcademicSemisterQuery(undefined);
+  const { data } = useAcademicSemisterQuery(undefined);
   console.log(data);
 
   return <div>AcademicSemiseter</div>;
