@@ -21,6 +21,8 @@ export type TItemsProps = {
 type TUSER = {
   userId: string;
   role: string;
+  iat: number;
+  exp: number;
 };
 
 export type UserInitState = {
@@ -32,3 +34,5 @@ export type LoginFormFieldType = {
   id?: string;
   password?: string;
 };
+
+// export const ErrorType =
