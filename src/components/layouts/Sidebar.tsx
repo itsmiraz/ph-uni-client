@@ -15,13 +15,12 @@ const userRole = {
 };
 
 const Sidebar = () => {
-  const state = useAppSelector(state => state.auth);
+  const { user } = useAppSelector(state => state.auth);
   const disPatch = useAppDispatch();
-  const currentUserRole = state?.user?.role;
 
   let sidebarItems;
 
-  switch (currentUserRole) {
+  switch (user?.role) {
     case userRole.ADMIN:
       sidebarItems = SideBarItemsGenerator(adminPaths, userRole.ADMIN);
       break;
