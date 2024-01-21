@@ -1,8 +1,10 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { SideBarItemsGenerator } from "../../utils/sideBarItemsGenerator";
 import { adminPaths } from "../../routes/admin.routes";
 import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import { logOut } from "../../redux/feature/auth/authSlice";
 
 const { Sider } = Layout;
 
@@ -13,7 +15,9 @@ const userRole = {
 };
 
 const Sidebar = () => {
-  const currentUserRole = "faculty";
+  const state = useAppSelector(state => state.auth);
+  const disPatch = useAppDispatch();
+  const currentUserRole = state?.user?.role;
 
   let sidebarItems;
 
@@ -32,11 +36,14 @@ const Sidebar = () => {
       break;
   }
 
+  const handleLogout = () => {
+    disPatch(logOut());
+  };
+
   return (
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
-      style={{ paddingLeft: "10px" }}
       onBreakpoint={broken => {
         console.log(broken);
       }}
@@ -44,15 +51,30 @@ const Sidebar = () => {
         console.log(collapsed, type);
       }}
     >
-      <div>
-        <h1 style={{ color: "white", margin: "20px" }}>PH University </h1>
+      <div
+        style={{
+          paddingLeft: "10px",
+          display: "flex",
+          height: "100vh",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <h1 style={{ color: "white", margin: "20px" }}>PH University </h1>
+        </div>
+        <div style={{ flex: 1 }}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["4"]}
+            items={sidebarItems}
+          />
+        </div>
+        <div style={{ marginTop: "auto", marginBottom: "10px" }}>
+          <Button onClick={handleLogout}>Logout</Button>
+        </div>
       </div>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={["4"]}
-        items={sidebarItems}
-      />
     </Sider>
   );
 };

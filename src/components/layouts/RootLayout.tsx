@@ -11,6 +11,7 @@ const RootLayout = () => {
   return (
     <Layout style={{ height: "100vh" }}>
       <Sidebar />
+
       <Layout>
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>

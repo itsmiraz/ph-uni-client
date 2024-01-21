@@ -5,11 +5,12 @@ import { useLoginMutation } from "../../redux/feature/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks/hooks";
 import { setUser } from "../../redux/feature/auth/authSlice";
 import { VerifyToken } from "../../utils/verifyToken";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const [login, { error }] = useLoginMutation();
-
+  const navigate = useNavigate();
   const onSubmit = async (values: any) => {
     const payload = {
       id: values.id,
@@ -22,6 +23,7 @@ const Login = () => {
     }
     const user = VerifyToken(res.data.accessToken);
     dispatch(setUser({ user: user, token: res.data.accessToken }));
+    navigate("/");
   };
 
   return (

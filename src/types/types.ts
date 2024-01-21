@@ -18,8 +18,13 @@ export type TItemsProps = {
   children?: TItemsProps[];
 };
 
+type TUSER = {
+  userId: string;
+  role: string;
+};
+
 export type UserInitState = {
-  user: null | object;
+  user: null | TUSER;
   token: null | string;
 };
 
