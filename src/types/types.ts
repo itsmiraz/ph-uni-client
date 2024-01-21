@@ -17,3 +17,8 @@ export type TItemsProps = {
   element?: ReactNode;
   children?: TItemsProps[];
 };
+
+export type UserInitState = {
+  user: null | object;
+  token: null | string;
+};
