@@ -22,3 +22,8 @@ export type UserInitState = {
   user: null | object;
   token: null | string;
 };
+
+export type LoginFormFieldType = {
+  id?: string;
+  password?: string;
+};
