@@ -8,6 +8,7 @@ import { monthOptions } from "../../../constants/global";
 import { createSemesterShcema } from "../../../validations/academicSchemas";
 import { useCreateAcademicSemesterMutation } from "../../../redux/feature/admin/academicManagement.api";
 import { toast } from "sonner";
+import { TResponse } from "../../../types/global";
 
 const currentYear = new Date().getFullYear();
 
@@ -31,11 +32,16 @@ const CreateAcademicSemester = () => {
     };
 
     try {
-      const res = await createAcademicSemester(payload);
+      const res = (await createAcademicSemester(payload)) as TResponse;
+      // console.log(res);
       console.log(res);
-    } catch (err) {
-      toast.error("Something went wrong");
-      console.log(err);
+      if (res?.error) {
+        toast.error(res?.error?.data?.message || "Something Went Wrong");
+      } else {
+        toast.success("Semester Created");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Something Went Wrong");
     }
   };
 
