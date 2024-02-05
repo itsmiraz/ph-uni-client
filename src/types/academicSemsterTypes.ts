@@ -23,3 +23,7 @@ export type TAcademicSemister = {
   startMonth: TMonth;
   endMonth: TMonth;
 };
+export type TAcademicSemisterQueryParam = {
+  name: string;
+  value: boolean | React.Key;
+};

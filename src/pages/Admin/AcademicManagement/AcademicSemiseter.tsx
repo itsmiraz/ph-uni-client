@@ -1,15 +1,27 @@
 import { Table, TableColumnsType, TableProps } from "antd";
 import { useGetAllacademicSemisterQuery } from "../../../redux/feature/admin/academicManagement.api";
-import { TAcademicSemister } from "../../../types/academicSemsterTypes";
-
+import {
+  TAcademicSemister,
+  TAcademicSemisterQueryParam,
+} from "../../../types/academicSemsterTypes";
+import { useState } from "react";
+type TTableDataType = Pick<
+  TAcademicSemister,
+  "name" | "year" | "startMonth" | "endMonth"
+>;
 const AcademicSemiseter = () => {
-  const { data: semesterData } = useGetAllacademicSemisterQuery(undefined);
+  const [Params, setParams] = useState<
+    TAcademicSemisterQueryParam[] | undefined
+  >([]);
 
-  console.log(semesterData);
+  const { data: semesterData, isFetching } =
+    useGetAllacademicSemisterQuery(Params);
+
+  // console.log(semesterData);
 
   const data = semesterData?.data?.map(
     ({ _id, name, year, endMonth, startMonth }) => ({
-      _id,
+      key: _id,
       name,
       year,
       startMonth,
@@ -17,27 +29,22 @@ const AcademicSemiseter = () => {
     })
   );
 
-  type TTableDataType = Pick<
-    TAcademicSemister,
-    "_id" | "name" | "year" | "startMonth" | "endMonth"
-  >;
-
   const columns: TableColumnsType<TTableDataType> = [
     {
       title: "Name",
       dataIndex: "name",
       filters: [
         {
-          text: "Joe",
-          value: "Joe",
+          text: "Autumn",
+          value: "Autumn",
         },
         {
-          text: "Category 1",
-          value: "Category 1",
+          text: "Fall",
+          value: "Fall",
         },
         {
-          text: "Category 2",
-          value: "Category 2",
+          text: "Summer",
+          value: "Summer",
         },
       ],
     },
@@ -61,10 +68,25 @@ const AcademicSemiseter = () => {
     sorter,
     extra
   ) => {
-    console.log("params", pagination, filters, sorter, extra);
+    // console.log("params", pagination, filters, sorter, extra);
+
+    if (extra.action === "filter") {
+      const queryPramas: TAcademicSemisterQueryParam[] = [];
+      filters.name?.forEach(item =>
+        queryPramas.push({ name: "name", value: item })
+      );
+      setParams(queryPramas);
+    }
   };
 
-  return <Table columns={columns} dataSource={data} onChange={onChange} />;
+  return (
+    <Table
+      loading={isFetching}
+      columns={columns}
+      dataSource={data}
+      onChange={onChange}
+    />
+  );
 };
 
 export default AcademicSemiseter;

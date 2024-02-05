@@ -1,14 +1,28 @@
-import { TAcademicSemister } from "../../../types/academicSemsterTypes";
+import {
+  TAcademicSemister,
+  TAcademicSemisterQueryParam,
+} from "../../../types/academicSemsterTypes";
 import { TResponseRedux } from "../../../types/global";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagementApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getAllacademicSemister: builder.query({
-      query: () => ({
-        url: "/academic-semister",
-        method: "GET",
-      }),
+      query: args => {
+        const params = new URLSearchParams();
+
+        if (args[0]?.name) {
+          args.forEach((element: TAcademicSemisterQueryParam) => {
+            params.append(element.name, element.value as string);
+          });
+        }
+
+        return {
+          url: "/academic-semister",
+          method: "GET",
+          params: params,
+        };
+      },
       transformResponse: (response: TResponseRedux<TAcademicSemister[]>) => {
         return {
           data: response.data,
