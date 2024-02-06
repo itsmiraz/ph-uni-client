@@ -13,7 +13,7 @@ const academicManagementApi = baseApi.injectEndpoints({
       query: args => {
         const params = new URLSearchParams();
 
-        if (args[0]?.name) {
+        if (args) {
           args.forEach((element: TAcademicSemisterQueryParam) => {
             params.append(element.name, element.value as string);
           });
