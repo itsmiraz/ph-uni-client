@@ -9,7 +9,7 @@ import { createSemesterShcema } from "../../../validations/academicSchemas";
 import { useCreateAcademicSemesterMutation } from "../../../redux/feature/admin/academicManagement.api";
 import { toast } from "sonner";
 import { TResponse } from "../../../types/global";
-import { TAcademicSemister } from "../../../types/academicSemsterTypes";
+import { TAcademicSemister } from "../../../types/academicManagementTypes";
 
 const currentYear = new Date().getFullYear();
 

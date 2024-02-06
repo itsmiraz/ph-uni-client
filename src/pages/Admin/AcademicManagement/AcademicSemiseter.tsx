@@ -3,7 +3,7 @@ import { useGetAllacademicSemisterQuery } from "../../../redux/feature/admin/aca
 import {
   TAcademicSemister,
   TAcademicSemisterQueryParam,
-} from "../../../types/academicSemsterTypes";
+} from "../../../types/academicManagementTypes";
 import { useState } from "react";
 type TTableDataType = Pick<
   TAcademicSemister,
