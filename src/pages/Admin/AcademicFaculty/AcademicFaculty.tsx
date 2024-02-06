@@ -11,7 +11,7 @@ const AcademicFaculty = () => {
     name,
   }));
 
-  const columns: TableColumnsType<TAcademicFaculty> = [
+  const columns: TableColumnsType<Pick<TAcademicFaculty, "name">> = [
     {
       title: "Name",
       dataIndex: "name",

@@ -28,5 +28,12 @@ export type TAcademicSemisterQueryParam = {
   value: boolean | React.Key;
 };
 export type TAcademicFaculty = {
+  _id?: string;
   name: string;
+};
+
+export type TAcademicDepartment = {
+  _id?: string;
+  name: string;
+  academicFaculty: TAcademicFaculty;
 };
