@@ -80,12 +80,15 @@ const AcademicSemiseter = () => {
   };
 
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={data}
-      onChange={onChange}
-    />
+    <div>
+      <h2>Academic Semesters</h2>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 
