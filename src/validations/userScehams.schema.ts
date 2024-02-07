@@ -8,7 +8,7 @@ export const createStudentDataSchema = z.object({
   }),
   email: z.string().email(),
   gender: z.enum(["Male", "Female"]),
-  dateOfBirth: z.string(), // You might want to use z.date() if you want to validate the date format
+  dateOfBirth: z.object({}), // You might want to use z.date() if you want to validate the date format
   bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]),
   contactNumber: z.string().length(10),
   emergencyContactNo: z.string().length(10),

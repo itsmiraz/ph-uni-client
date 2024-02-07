@@ -1,52 +1,55 @@
-import { Button, Col, Divider, Flex, Row } from "antd";
+import { Button, Col, Divider, Flex, Form, Input, Row } from "antd";
 import PhInput from "../../../components/form/PhInput";
 import PHForm from "../../../components/form/PHForm";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createStudentDataSchema } from "../../../validations/userScehams.schema";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { createStudentDataSchema } from "../../../validations/userScehams.schema";
 import PhDatePicker from "../../../components/form/PhDatePicker";
 import {
   useGetAllacademicAcademicDepartmentQuery,
   useGetAllacademicSemisterQuery,
 } from "../../../redux/feature/admin/academicManagement.api";
 import PHSelect from "../../../components/form/PhSelect";
+import { useCreateStudentMutation } from "../../../redux/feature/admin/userManagement.api";
+import { TResponse } from "../../../types/global";
+import { toast } from "sonner";
+import { TStuedent } from "../../../types/user.types";
 
-// const studentData = {
-//   name: {
-//     firstName: "Miraj",
-//     middleName: "Ahmed ",
-//     lastName: "Hossen1",
-//   },
-//   email: "stuent1@gmail.com",
-//   gender: "Male",
-//   dateOfBirth: "2000-01-01",
-//   bloodGroup: "A+",
+const studentData = {
+  name: {
+    firstName: "Miraj",
+    middleName: "Ahmed ",
+    lastName: "Hossen1",
+  },
+  email: "stuent1@gmail.com",
+  gender: "Male",
 
-//   contactNumber: "1234567890",
-//   emergencyContactNo: "9876543210",
-//   presentAddress: "123 Main St, City",
-//   permanentAddress: "456 Oak St, Town",
+  bloodGroup: "A+",
 
-//   admissionSemester: "657e6fadf6ca4d62fc03d7e2",
-//   academicDepartment: "65b9de69dd8592137de33e6f",
+  contactNumber: "1234567890",
+  emergencyContactNo: "9876543210",
+  presentAddress: "123 Main St, City",
+  permanentAddress: "456 Oak St, Town",
 
-//   Guardian: {
-//     fatherName: "John Doe Sr.",
-//     fatherContact: "1234567890",
-//     fatherOccupation: "Engineer",
-//     motherName: "Jane Doe",
-//     motherContact: "9876543210",
-//     motherOccupation: "Doctor",
-//   },
-//   localGuardian: {
-//     occupation: "Business",
-//     name: "Local Guardian Name",
-//     contact: "9999999999",
-//     address: "789 Pine St",
-//   },
-// };
+  Guardian: {
+    fatherName: "John Doe Sr.",
+    fatherContact: "1234567890",
+    fatherOccupation: "Engineer",
+    motherName: "Jane Doe",
+    motherContact: "9876543210",
+    motherOccupation: "Doctor",
+  },
+  localGuardian: {
+    occupation: "Business",
+    name: "Local Guardian Name",
+    contact: "9999999999",
+    address: "789 Pine St",
+  },
+};
 
 const CreateStudent = () => {
+  const [createStudent] = useCreateStudentMutation();
+
   const { data: semesterData, isFetching: SemesterDataisFetching } =
     useGetAllacademicSemisterQuery(undefined);
   const { data: deparments, isFetching: departmentDataisFetching } =
@@ -61,8 +64,32 @@ const CreateStudent = () => {
     label: item.name,
   }));
 
-  const handleSubmit: SubmitHandler<FieldValues> = data => {
-    console.log(data);
+  const handleSubmit: SubmitHandler<FieldValues> = async data => {
+    // console.log(data);
+
+    const payload = {
+      student: data,
+    };
+
+    const formData = new FormData();
+
+    formData.append("data", JSON.stringify(payload));
+    formData.append("file", data.image);
+
+    try {
+      toast.success("Creating");
+
+      const res = (await createStudent(formData)) as TResponse<TStuedent>;
+      console.log(res);
+      // console.log(res);
+      if (res?.error) {
+        toast.error(res?.error?.data?.message || "Something Went Wrong");
+      } else {
+        toast.success("Student  Created");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Something Went Wrong");
+    }
   };
 
   return (
@@ -72,8 +99,9 @@ const CreateStudent = () => {
       <Flex style={{ padding: "24px" }}>
         <Col span={18}>
           <PHForm
+            defaultValues={studentData}
             onSubmit={handleSubmit}
-            resolver={zodResolver(createStudentDataSchema)}
+            // resolver={zodResolver(createStudentDataSchema)}
           >
             <p style={{ fontWeight: 600 }}>Personal Info</p>
             <Divider></Divider>
@@ -101,6 +129,22 @@ const CreateStudent = () => {
                 <PhDatePicker label="Date of Birth" name="dateOfBirth" />
               </Col>
               <Col span={6}>
+                <PhInput label="Blood Group" type="text" name="bloodGroup" />
+              </Col>
+              <Col span={12}>
+                <Controller
+                  name="image"
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <Form.Item label="Picture">
+                      <Input
+                        value={value?.fileName}
+                        {...field}
+                        onChange={e => onChange(e.target.files?.[0])}
+                        type="file"
+                      ></Input>
+                    </Form.Item>
+                  )}
+                />
                 <PhInput label="Blood Group" type="text" name="bloodGroup" />
               </Col>
             </Row>

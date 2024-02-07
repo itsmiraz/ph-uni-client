@@ -1,3 +1,8 @@
+import {
+  TAcademicDepartment,
+  TAcademicSemister,
+} from "./academicManagementTypes";
+
 export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
@@ -22,21 +27,22 @@ export type TUserName = {
 export type TStuedent = {
   id: string;
   user: string;
-
   name: TUserName;
-  gender: "Male" | "Female";
+  fullName: string;
+  gender: string;
   email: string;
   dateOfBirth: string;
   contactNumber: string;
   emergencyContactNo: string;
-  bloodGroup?: "A+" | "B+" | "AB+" | "O+";
+  bloodGroup?: string;
   presentAddress: string;
   permanentAddress: string;
   Guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profile?: string;
-  admissionSemester: string;
-  academicDepartment: string;
+  admissionSemester: TAcademicSemister;
+  academicDepartment: TAcademicDepartment;
   academicFaculty: string;
   isDeleted: boolean;
+  _id: string;
 };
