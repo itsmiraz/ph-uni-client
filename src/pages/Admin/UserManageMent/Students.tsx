@@ -1,16 +1,32 @@
-import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps,
+} from "antd";
 import { TAcademicSemisterQueryParam } from "../../../types/academicManagementTypes";
 import { useState } from "react";
 import { useGetAllStudentsQuery } from "../../../redux/feature/admin/userManagement.api";
 import { TStuedent } from "../../../types/user.types";
 type TTableDataType = Pick<TStuedent, "fullName">;
 const Students = () => {
-  const [Params, setParams] = useState<
-    TAcademicSemisterQueryParam[] | undefined
-  >([]);
+  const [Params, setParams] = useState<TAcademicSemisterQueryParam[]>([]);
+  const [Page, setPage] = useState(1);
 
-  const { data: stuentsData, isFetching } = useGetAllStudentsQuery(Params);
-  console.log(stuentsData);
+  const {
+    data: stuentsData,
+    isFetching,
+    isLoading,
+  } = useGetAllStudentsQuery([
+    { name: "page", value: Page },
+    { name: "limit", value: 6 },
+    { name: "sort", value: "id" },
+    ...Params,
+  ]);
+  //   console.log(stuentsData);
+  const meta = stuentsData?.meta;
   // console.log(stuentsData);
 
   const data = stuentsData?.data?.map(
@@ -79,10 +95,17 @@ const Students = () => {
     <div>
       <h2>Academic Semesters</h2>
       <Table
-        loading={isFetching}
+        loading={isFetching || isLoading}
         columns={columns}
         dataSource={data}
         onChange={onChange}
+        pagination={false}
+      />
+      <Pagination
+        current={Page}
+        onChange={value => setPage(value)}
+        pageSize={meta?.limit}
+        total={meta?.total}
       />
     </div>
   );
