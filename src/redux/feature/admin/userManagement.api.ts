@@ -37,8 +37,44 @@ const userManagementApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    getAllFaculties: builder.query({
+      query: args => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((element: TAcademicSemisterQueryParam) => {
+            params.append(element.name, element.value as string);
+          });
+        }
+
+        return {
+          url: "/faculty",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<TStuedent[]>) => {
+        return {
+          data: response.data,
+          meta: response?.meta,
+          error: response?.error,
+        };
+      },
+    }),
+
+    createFaculty: builder.mutation({
+      query: payload => ({
+        url: "/users/create-faculty",
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
-export const { useCreateStudentMutation, useGetAllStudentsQuery } =
-  userManagementApi;
+export const {
+  useCreateStudentMutation,
+  useGetAllFacultiesQuery,
+  useCreateFacultyMutation,
+  useGetAllStudentsQuery,
+} = userManagementApi;
