@@ -59,7 +59,7 @@ const Sidebar = () => {
         <div>
           <h1 style={{ color: "white", margin: "20px" }}>PH University </h1>
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, overflowY: "auto", paddingBottom: "20px" }}>
           <Menu
             theme="dark"
             mode="inline"
@@ -67,7 +67,7 @@ const Sidebar = () => {
             items={sidebarItems}
           />
         </div>
-        <div style={{ marginTop: "auto", marginBottom: "10px" }}>
+        <div style={{ marginTop: "10px", marginBottom: "10px" }}>
           <Button onClick={handleLogout}>Logout</Button>
         </div>
       </div>

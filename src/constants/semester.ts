@@ -13,3 +13,15 @@ export const AcadmicSemisterOptions = [
     value: "03",
   },
 ];
+
+export const RegistrationStatus = [
+  {
+    label: "Upcomming",
+    value: "UPCOMING",
+  },
+  {
+    label: "Ongoing",
+    value: "ONGOING",
+  },
+  { label: "Ended", value: "ENDED" },
+];
