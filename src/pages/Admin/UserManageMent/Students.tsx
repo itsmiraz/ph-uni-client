@@ -93,7 +93,7 @@ const Students = () => {
 
   return (
     <div>
-      <h2>Academic Semesters</h2>
+      <h2>Students</h2>
       <Table
         loading={isFetching || isLoading}
         columns={columns}

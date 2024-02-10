@@ -6,11 +6,13 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useGetAllacademicSemisterQuery } from "../../../redux/feature/admin/academicManagement.api";
 import PhInput from "../../../components/form/PhInput";
 import PhDatePicker from "../../../components/form/PhDatePicker";
-// import { toast } from "sonner";
-// import { TResponse } from "../../../types/global";
-// import { TAcademicSemister } from "../../../types/academicManagementTypes";
+import { useSemesterRegisterMutation } from "../../../redux/feature/admin/semesterManagement.api";
+import { TResponse } from "../../../types/global";
+import { toast } from "sonner";
 
 const SemesterRegistration = () => {
+  const [semesterRegister] = useSemesterRegisterMutation();
+
   const { data: semesterData, isFetching } = useGetAllacademicSemisterQuery([
     { name: "sort", value: "year" },
   ]);
@@ -23,22 +25,22 @@ const SemesterRegistration = () => {
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     const payload = {
       ...data,
+      minCredit: Number(data.minCredit),
+      maxCredit: Number(data.maxCredit),
     };
     console.log(payload);
-    // try {
-    //   const res = (await createAcademicSemester(
-    //     payload
-    //   )) as TResponse<TAcademicSemister>;
-    //   // console.log(res);
-    //   // console.log(res);
-    //   if (res?.error) {
-    //     toast.error(res?.error?.data?.message || "Something Went Wrong");
-    //   } else {
-    //     toast.success("Semester Created");
-    //   }
-    // } catch (err: any) {
-    //   toast.error(err?.data?.message || "Something Went Wrong");
-    // }
+    try {
+      const res = (await semesterRegister(payload)) as TResponse<any>;
+      console.log(res);
+      // console.log(res);
+      if (res?.error) {
+        toast.error(res?.error?.data?.message || "Something Went Wrong");
+      } else {
+        toast.success("Semester Registered");
+      }
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Something Went Wrong");
+    }
   };
 
   return (
