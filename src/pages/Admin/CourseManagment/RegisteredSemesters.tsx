@@ -2,14 +2,17 @@ import {
   Button,
   Dropdown,
   Pagination,
-  Space,
   Table,
   TableColumnsType,
   TableProps,
+  Tag,
 } from "antd";
 import { TAcademicSemisterQueryParam } from "../../../types/academicManagementTypes";
 import { useState } from "react";
-import { useGetAllRegisteredSemstersQuery } from "../../../redux/feature/admin/semesterManagement.api";
+import {
+  useGetAllRegisteredSemstersQuery,
+  useUpdateSemesterRegisterMutation,
+} from "../../../redux/feature/admin/semesterManagement.api";
 import { TSemisterRegistration } from "../../../types/semesterRegistrationTypes";
 
 type TTableDataType = Pick<
@@ -24,7 +27,7 @@ const items = [
   },
   {
     label: "Ongoing",
-    key: "ONGOIN",
+    key: "ONGOING",
   },
   {
     label: "Ended",
@@ -33,6 +36,8 @@ const items = [
 ];
 
 const RegisteredSemesters = () => {
+  const [semesterId, setsemesterId] = useState("");
+  const [updateSemesterRegister] = useUpdateSemesterRegisterMutation();
   const [Params, setParams] = useState<TAcademicSemisterQueryParam[]>([]);
   const [Page, setPage] = useState(1);
 
@@ -59,8 +64,19 @@ const RegisteredSemesters = () => {
     })
   );
 
-  const handleUpdateStatus = data => {
-    console.log(data);
+  const handleUpdateStatus = async (data: any) => {
+    try {
+      const payload = {
+        id: semesterId,
+        data: {
+          status: data?.key,
+        },
+      };
+
+      await updateSemesterRegister(payload);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const menuProps = {
     items,
@@ -84,15 +100,28 @@ const RegisteredSemesters = () => {
     {
       title: "Status",
       dataIndex: "status",
+      render(item) {
+        let color = "";
+
+        if (item === "UPCOMING") {
+          color = "blue";
+        } else if (item === "ONGOING") {
+          color = "green";
+        } else if (item === "ENDED") {
+          color = "red";
+        }
+
+        return <Tag color={color}>{item}</Tag>;
+      },
     },
 
     {
       title: "Actions",
       dataIndex: "",
-      render: () => {
+      render: item => {
         return (
-          <Dropdown menu={menuProps}>
-            <Button>Update</Button>
+          <Dropdown menu={menuProps} trigger={["click"]}>
+            <Button onClick={() => setsemesterId(item?.key)}>Update</Button>
           </Dropdown>
         );
       },
