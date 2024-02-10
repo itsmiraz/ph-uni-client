@@ -1,31 +1,36 @@
+import { TAcademicSemisterQueryParam } from "../../../types/academicManagementTypes";
+import { TResponseRedux } from "../../../types/global";
+import { TSemisterRegistration } from "../../../types/semesterRegistrationTypes";
 import { baseApi } from "../../api/baseApi";
 
 const semesterManagementApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    // getAllRegisteredSemsters: builder.query({
-    //   query: args => {
-    //     const params = new URLSearchParams();
+    getAllRegisteredSemsters: builder.query({
+      query: args => {
+        const params = new URLSearchParams();
 
-    //     if (args) {
-    //       args.forEach((element: TAcademicSemisterQueryParam) => {
-    //         params.append(element.name, element.value as string);
-    //       });
-    //     }
+        if (args) {
+          args.forEach((element: TAcademicSemisterQueryParam) => {
+            params.append(element.name, element.value as string);
+          });
+        }
 
-    //     return {
-    //       url: "/students",
-    //       method: "GET",
-    //       params: params,
-    //     };
-    //   },
-    //   transformResponse: (response: TResponseRedux<TStuedent[]>) => {
-    //     return {
-    //       data: response.data,
-    //       meta: response?.meta,
-    //       error: response?.error,
-    //     };
-    //   },
-    // }),
+        return {
+          url: "/semister-registration",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (
+        response: TResponseRedux<TSemisterRegistration[]>
+      ) => {
+        return {
+          data: response.data,
+          meta: response?.meta,
+          error: response?.error,
+        };
+      },
+    }),
 
     semesterRegister: builder.mutation({
       query: payload => ({
@@ -37,4 +42,5 @@ const semesterManagementApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useSemesterRegisterMutation } = semesterManagementApi;
+export const { useSemesterRegisterMutation, useGetAllRegisteredSemstersQuery } =
+  semesterManagementApi;
