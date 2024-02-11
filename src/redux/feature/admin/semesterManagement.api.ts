@@ -1,6 +1,9 @@
 import { TAcademicSemisterQueryParam } from "../../../types/academicManagementTypes";
 import { TResponseRedux } from "../../../types/global";
-import { TSemisterRegistration } from "../../../types/semesterRegistrationTypes";
+import {
+  TCourse,
+  TSemisterRegistration,
+} from "../../../types/semesterRegistrationTypes";
 import { baseApi } from "../../api/baseApi";
 
 const semesterManagementApi = baseApi.injectEndpoints({
@@ -49,6 +52,47 @@ const semesterManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["semester"],
     }),
+    getAllCourses: builder.query({
+      query: args => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((element: TAcademicSemisterQueryParam) => {
+            params.append(element.name, element.value as string);
+          });
+        }
+
+        return {
+          url: "/course",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["course"],
+      transformResponse: (response: TResponseRedux<TCourse[]>) => {
+        return {
+          data: response.data,
+          meta: response?.meta,
+          error: response?.error,
+        };
+      },
+    }),
+    createCourse: builder.mutation({
+      query: payload => ({
+        url: "/course/create-course",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["course"],
+    }),
+    assignFacultiesToCourse: builder.mutation({
+      query: args => ({
+        url: `/course/${args?.courseId}/assign-faculties`,
+        method: "PUT",
+        body: args.data,
+      }),
+      invalidatesTags: ["course"],
+    }),
   }),
 });
 
@@ -56,4 +100,7 @@ export const {
   useSemesterRegisterMutation,
   useGetAllRegisteredSemstersQuery,
   useUpdateSemesterRegisterMutation,
+  useGetAllCoursesQuery,
+  useCreateCourseMutation,
+  useAssignFacultiesToCourseMutation,
 } = semesterManagementApi;
