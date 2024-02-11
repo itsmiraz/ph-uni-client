@@ -25,3 +25,4 @@ export const RegistrationStatus = [
   },
   { label: "Ended", value: "ENDED" },
 ];
+export const Days = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];

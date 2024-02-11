@@ -2,6 +2,7 @@ import { TAcademicSemisterQueryParam } from "../../../types/academicManagementTy
 import { TResponseRedux } from "../../../types/global";
 import {
   TCourse,
+  TCourseFaculty,
   TSemisterRegistration,
 } from "../../../types/semesterRegistrationTypes";
 import { baseApi } from "../../api/baseApi";
@@ -93,6 +94,28 @@ const semesterManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["course"],
     }),
+    getAssinedFacultiesToCourse: builder.query({
+      query: args => {
+        return {
+          url: `/course/get-assinged-faculties/${args}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<TCourseFaculty>) => {
+        return {
+          data: response.data,
+          meta: response?.meta,
+          error: response?.error,
+        };
+      },
+    }),
+    offerCourse: builder.mutation({
+      query: payload => ({
+        url: "/offered-course/create",
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -103,4 +126,6 @@ export const {
   useGetAllCoursesQuery,
   useCreateCourseMutation,
   useAssignFacultiesToCourseMutation,
+  useGetAssinedFacultiesToCourseQuery,
+  useOfferCourseMutation,
 } = semesterManagementApi;

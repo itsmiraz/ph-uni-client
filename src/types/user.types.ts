@@ -1,5 +1,6 @@
 import {
   TAcademicDepartment,
+  TAcademicFaculty,
   TAcademicSemister,
 } from "./academicManagementTypes";
 
@@ -45,4 +46,22 @@ export type TStuedent = {
   academicFaculty: string;
   isDeleted: boolean;
   _id: string;
+};
+export type TFaculty = {
+  _id: string;
+  id: string;
+  user: string;
+  name: TUserName;
+  gender: string;
+  email: string;
+  dateOfBirth: string;
+  contactNumber: string;
+  emergencyContactNo: string;
+  presentAddress: string;
+  permanentAddress: string;
+  academicDepartment: TAcademicDepartment;
+  academicFaculty: TAcademicFaculty;
+  designation: string;
+  profile?: string;
+  isDeleted: boolean;
 };

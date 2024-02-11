@@ -1,4 +1,5 @@
 import { TAcademicSemister } from "./academicManagementTypes";
+import { TFaculty } from "./user.types";
 
 export type TSemisterRegistration = {
   _id: string;
@@ -23,4 +24,9 @@ export type TCourse = {
   credits: number;
   isDeleted?: boolean;
   preRequisiteCourses: TPreRequisiteCourse[];
+};
+export type TCourseFaculty = {
+  _id: string;
+  course: TCourse;
+  faculties: [TFaculty];
 };
