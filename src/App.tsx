@@ -3,7 +3,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.routes";
 
 function App() {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute role={undefined}>
       <RootLayout />
     </ProtectedRoute>
   );

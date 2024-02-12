@@ -4,6 +4,15 @@ import {
   TAcademicSemister,
 } from "./academicManagementTypes";
 
+export type TUser = {
+  userId: number;
+  role: string;
+  iat: number;
+  exp: number;
+};
+
+// {userId: '2025010001', role: 'student', iat: 1707730105, exp: 1708334905}
+
 export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;

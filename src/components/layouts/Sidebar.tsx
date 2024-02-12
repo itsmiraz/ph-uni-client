@@ -5,6 +5,8 @@ import { facultyPaths } from "../../routes/faculty.routes";
 import { studentPaths } from "../../routes/student.routes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 import { logOut } from "../../redux/feature/auth/authSlice";
+import { VerifyToken } from "../../utils/verifyToken";
+import { TUser } from "../../types/user.types";
 
 const { Sider } = Layout;
 
@@ -15,12 +17,18 @@ const userRole = {
 };
 
 const Sidebar = () => {
-  const { user } = useAppSelector(state => state.auth);
-  const disPatch = useAppDispatch();
+  const { token } = useAppSelector(state => state.auth);
+
+  const dispatch = useAppDispatch();
+
+  let user;
+  if (token) {
+    user = VerifyToken(token);
+  }
 
   let sidebarItems;
 
-  switch (user?.role) {
+  switch ((user as TUser)?.role) {
     case userRole.ADMIN:
       sidebarItems = SideBarItemsGenerator(adminPaths, userRole.ADMIN);
       break;
@@ -36,7 +44,7 @@ const Sidebar = () => {
   }
 
   const handleLogout = () => {
-    disPatch(logOut());
+    dispatch(logOut());
   };
 
   return (

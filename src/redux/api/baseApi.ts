@@ -32,6 +32,9 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   if (result.error?.status === 404) {
     ErrorHandler(result);
   }
+  if (result.error?.status === 403) {
+    ErrorHandler(result);
+  }
 
   if (result.error?.status === 401) {
     const res = await fetch("http://localhost:5000/api/v1/auth/refresh-token", {
